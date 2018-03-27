@@ -15,3 +15,7 @@ dependencies {
 repositories {
     jcenter()
 }
+
+// stage task is required by Heroku
+task stage(dependsOn: ['build', 'clean'])
+build.mustRunAfter clean
