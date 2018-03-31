@@ -7,15 +7,32 @@ apply plugin: 'war'
 
 dependencies {
     compile 'org.springframework:spring-webmvc:5.0.4.RELEASE'
+    compile 'org.slf4j:slf4j-api:1.7.25'
+    compile 'com.fasterxml.jackson.core:jackson-databind:2.9.4'
+
     providedCompile 'javax.servlet:javax.servlet-api:4.0.0'
 
-    testCompile 'junit:junit:4.12'
+    testCompile 'junit:junit:5.1.0'
+
+    // required by Heroku
+    compile 'com.github.jsimone:webapp-runner:8.5.29.0'
 }
 
 repositories {
     jcenter()
 }
 
-// stage task is required by Heroku
-task stage(dependsOn: ['build', 'clean'])
-build.mustRunAfter clean
+// tasks that are required by Heroku
+task stage() {
+    dependsOn clean, war
+}
+war.mustRunAfter clean
+
+task copyToLib(type: Copy) {
+    into "$buildDir/server"
+    from(configurations.compile) {
+        include "webapp-runner*"
+    }
+}
+
+stage.dependsOn(copyToLib)
