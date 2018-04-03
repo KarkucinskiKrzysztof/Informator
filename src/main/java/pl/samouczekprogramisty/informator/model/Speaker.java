@@ -1,8 +1,15 @@
 package pl.samouczekprogramisty.informator.model;
 
+import javax.persistence.Column;
+import javax.persistence.Entity;
+import javax.persistence.Id;
 import java.net.URL;
 
+@Entity
 public class Speaker {
+
+    @Id
+    private Integer id;
 
     private Category category;
 
@@ -14,6 +21,14 @@ public class Speaker {
     private URL githubProfile;
 
     private String description;
+
+    public Integer getId() {
+        return id;
+    }
+
+    public void setId(Integer id) {
+        this.id = id;
+    }
 
     public Category getCategory() {
         return category;

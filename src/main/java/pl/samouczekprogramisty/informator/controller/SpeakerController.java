@@ -8,7 +8,8 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
-import pl.samouczekprogramisty.informator.model.dao.SpeakerDAO;
+import pl.samouczekprogramisty.informator.model.Speaker;
+import pl.samouczekprogramisty.informator.model.dao.SpeakerDao;
 import pl.samouczekprogramisty.informator.view.SpeakerView;
 
 @RestController
@@ -18,13 +19,11 @@ public class SpeakerController {
     private static final Logger LOG = LoggerFactory.getLogger(SpeakerController.class);
 
     @Autowired
-    private SpeakerDAO dao;
+    private SpeakerDao dao;
 
     @GetMapping(path = "/{id}", produces = MediaType.APPLICATION_JSON_VALUE)
-    public SpeakerView speaker(@PathVariable("id") Integer id) {
-        System.out.println("xxx: " + id);
-        LOG.debug("Processing id: " + id);
-        return new SpeakerView(dao.get(id));
+    public SpeakerView speaker(@PathVariable("id") Speaker speaker) {
+        return new SpeakerView(speaker);
     }
 }
 
