@@ -22,7 +22,7 @@ public class DatabaseConfiguration {
     DataSource dataSource() {
         DriverManagerDataSource dataSource = new DriverManagerDataSource();
         dataSource.setDriverClassName("org.postgresql.Driver");
-        dataSource.setUrl(System.getenv("DATABASE_URL"));
+        dataSource.setUrl(System.getenv("JDBC_DATABASE_URL"));
 
         return dataSource;
     }
