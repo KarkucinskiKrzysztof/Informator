@@ -16,6 +16,7 @@ import java.util.Collections;
 
 @ControllerAdvice
 @SuppressWarnings("unused")
+@ResponseBody
 public class InformatorExceptionHandler {
 
     private static ObjectMapper mapper = new ObjectMapper();
@@ -24,12 +25,12 @@ public class InformatorExceptionHandler {
         private static final MultiValueMap<String, String> HEADERS = new LinkedMultiValueMap<>(
                 Collections.singletonMap(HttpHeaders.CONTENT_TYPE, Collections.singletonList(MediaType.APPLICATION_JSON_VALUE))
         );
+        private final Exception exception;
         private HttpStatus responseStatus;
-        private String message;
 
         ErrorResponse(HttpStatus responseStatus, Exception exception) {
+            this.exception = exception;
             this.responseStatus = responseStatus;
-            this.message = exception.getMessage();
         }
 
         ResponseEntity<String> buildResponse() {
@@ -45,13 +46,21 @@ public class InformatorExceptionHandler {
         }
 
         public String getMessage() {
-            return message;
+            return exception.getMessage();
+        }
+
+        public String getExceptionClass() {
+            return exception.getClass().getCanonicalName();
         }
     }
 
     @ExceptionHandler(NotFoundException.class)
-    @ResponseBody
     public ResponseEntity<String> handleNotFound(NotFoundException exception) {
         return new ErrorResponse(HttpStatus.NOT_FOUND, exception).buildResponse();
+    }
+
+    @ExceptionHandler(NumberFormatException.class)
+    public ResponseEntity<String> handleNumberFormat(NumberFormatException exception) {
+        return new ErrorResponse(HttpStatus.BAD_REQUEST, exception).buildResponse();
     }
 }
