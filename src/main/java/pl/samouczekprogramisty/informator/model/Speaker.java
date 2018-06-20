@@ -1,15 +1,17 @@
 package pl.samouczekprogramisty.informator.model;
 
-import javax.persistence.Column;
-import javax.persistence.Entity;
-import javax.persistence.Id;
+import javax.persistence.*;
 import java.net.URL;
 
 @Entity
 public class Speaker {
 
     @Id
+    @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "speaker_seq")
+    @SequenceGenerator(name = "speaker_seq")
     private Integer id;
+
+    private Integer infoshareId;
 
     private Category category;
 
@@ -20,6 +22,7 @@ public class Speaker {
     private URL facebookProfile;
     private URL githubProfile;
 
+    @Column(columnDefinition = "text")
     private String description;
 
     public Integer getId() {
@@ -84,5 +87,13 @@ public class Speaker {
 
     public void setDescription(String description) {
         this.description = description;
+    }
+
+    public Integer getInfoshareId() {
+        return infoshareId;
+    }
+
+    public void setInfoshareId(Integer infoshareId) {
+        this.infoshareId = infoshareId;
     }
 }
